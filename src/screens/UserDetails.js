@@ -31,7 +31,7 @@ const UserDetails = ({ route, navigation }) => {
                     });
                 }} />
             <TouchableOpacity onPress={() => navigation.navigate('Send', { userName })}>
-                <Text>Send Email</Text>
+                <Text style={{ color: '#3798E9' }}>Send email to this user</Text>
             </TouchableOpacity>
         </Card>
     </View >
