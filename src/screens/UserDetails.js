@@ -30,6 +30,9 @@ const UserDetails = ({ route, navigation }) => {
                         navigation.navigate('Users');
                     });
                 }} />
+            <TouchableOpacity onPress={() => navigation.navigate('Send', { userName })}>
+                <Text>Send Email</Text>
+            </TouchableOpacity>
         </Card>
     </View >
 };

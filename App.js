@@ -6,6 +6,7 @@ import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import UsersList from './src/screens/UsersList';
 import UserDetails from './src/screens/UserDetails';
+import SendEmail from './src/screens/SendEmail';
 
 
 const Stack = createStackNavigator();
@@ -34,6 +35,11 @@ const Navigator = () => {
       name="Details"
       component={UserDetails}
       options={{ title: 'User Details' }}
+    />
+    <Stack.Screen
+      name="Send"
+      component={SendEmail}
+      options={{ title: 'Send Email' }}
     />
   </Stack.Navigator>
 }
