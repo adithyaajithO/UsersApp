@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+Array [
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "height": 40,
+        "marginBottom": 3,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "alignSelf": "center",
+          "fontSize": 15,
+          "width": 75,
+        }
+      }
+    >
+      User ID: 
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      onChangeText={[Function]}
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "backgroundColor": "rgb(244,244,244)",
+          "borderRadius": 4,
+          "flex": 1,
+          "paddingHorizontal": 7,
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>,
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "height": 40,
+        "marginBottom": 3,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "alignSelf": "center",
+          "fontSize": 15,
+          "width": 75,
+        }
+      }
+    >
+      Password: 
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      autoCorrect={false}
+      onChangeText={[Function]}
+      rejectResponderTermination={true}
+      secureTextEntry={true}
+      style={
+        Object {
+          "backgroundColor": "rgb(244,244,244)",
+          "borderRadius": 4,
+          "flex": 1,
+          "paddingHorizontal": 7,
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </View>,
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginVertical": 30,
+        "opacity": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "alignSelf": "center",
+          "color": "#3798E9",
+          "fontSize": 18,
+        }
+      }
+    />
+  </View>,
+]
+`;

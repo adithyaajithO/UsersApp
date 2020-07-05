@@ -21,7 +21,7 @@ const userReducer = (state, action) => {
     }
 }
 
-const getUsers = (dispatch) => {
+export const getUsers = (dispatch) => {
     return async () => {
         const response = await jsonServer.get('/users');
         
@@ -29,7 +29,7 @@ const getUsers = (dispatch) => {
     }
 }
 
-const addUser = (dispatch) => {
+export const addUser = (dispatch) => {
     return async (userName, password, callback) => {
         await jsonServer.post('/users', { userName, password });
 
@@ -37,7 +37,7 @@ const addUser = (dispatch) => {
     }
 }
 
-const deleteUser = (dispatch) => {
+export const deleteUser = (dispatch) => {
     return async (id) => {
         await jsonServer.delete(`/users/${id}`);
 
@@ -45,7 +45,7 @@ const deleteUser = (dispatch) => {
     }
 }
 
-const editUser = (dispatch) => {
+export const editUser = (dispatch) => {
     return async (id, userName, password, callback) => {
         await jsonServer.put(`/users/${id}`, { userName, password });
 

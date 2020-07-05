@@ -27,9 +27,6 @@ const UsersList = ({ navigation }) => {
         const unsubscribe = navigation.addListener('focus', () => {
             getUsers();
             setSearchResults('');
-            // setCurrentUsers(() => {
-            //     return state.slice(indexOfFirstUser, indexOfLastUser);
-            // })
         });
 
         return unsubscribe
@@ -37,9 +34,7 @@ const UsersList = ({ navigation }) => {
 
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    // const currentUsers = sortFlag ?
-    //     state.slice(indexOfFirstUser, indexOfLastUser).sort() :
-    //     state.slice(indexOfFirstUser, indexOfLastUser).sort().reverse();
+
     const compare = ( a, b ) => {
         if ( a.userName < b.userName ){
           return -1;
@@ -62,6 +57,9 @@ const UsersList = ({ navigation }) => {
         state.sort(compare).slice(indexOfFirstUser, indexOfLastUser) :
         state.sort(compareReverse).slice(indexOfFirstUser, indexOfLastUser);
 
+    if (state.length === 0) {
+        return null;
+    }
 
     return <View style={styles.containerStyle}>
         <SearchBar search={search}
@@ -97,9 +95,7 @@ const UsersList = ({ navigation }) => {
                         <Text style={styles.textStyle}>{item.id}</Text>
                         <TouchableOpacity onPress={() => {
                             deleteUser(item.id);
-                            // setCurrentUsers(() => {
-                            //     return state.slice(indexOfFirstUser, indexOfLastUser);
-                            // })
+                            setSearchResults('');
                         }}>
                             <Feather name="trash" style={styles.iconStyle} />
                         </TouchableOpacity>
@@ -113,9 +109,6 @@ const UsersList = ({ navigation }) => {
             paginate={(pageNumber) => {
                 setCurrentPage(pageNumber);
                 setSearchResults('');
-                // setCurrentUsers(() => {
-                //     return state.slice(indexOfFirstUser, indexOfLastUser);
-                // })
             }} />
     </View>
 }
@@ -123,9 +116,6 @@ const UsersList = ({ navigation }) => {
 const styles = StyleSheet.create({
     containerStyle: {
         flex: 1,
-        // height: 100,
-        // backgroundColor: 'gainsboro',
-        // paddingTop: 30,
         paddingVertical: 30,
         backgroundColor: 'white'
     },

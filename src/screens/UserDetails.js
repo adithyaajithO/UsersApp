@@ -13,7 +13,7 @@ const UserDetails = ({ route, navigation }) => {
     });
     const [userName, setUser] = useState(user.userName);
     const [password, setPassword] = useState(user.password);
-
+    
     return <View style={styles.parentContainerStyle}>
         <Card title="Update Details"
             titleStyle={styles.titleStyle}
