@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import UserForm from '../components/UserForm';
+import { Context as UsersContext } from '../context/UsersContext';
 
 
 const Login = ({ navigation }) => {
+    const { getUsers, state } = useContext(UsersContext);
     const [userName, setUser] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        getUsers();
+        const unsubscribe = navigation.addListener('focus', () => {
+            getUsers();
+        });
+
+        return unsubscribe
+    }, []);
 
     return <View style={styles.parentContainerStyle}>
         <Card title="Login"
@@ -19,7 +30,11 @@ const Login = ({ navigation }) => {
                 setUser={(userName) => setUser(userName)}
                 setPassword={(password) => setPassword(password)}
                 buttonLabel="Sign In"
-                onSubmit={() => alert('Functionality to be added..')} />
+                onSubmit={() => {
+                    state.find((user) => {
+                        return user.userName === userName && user.password === password
+                    }) ? navigation.navigate("Users") : alert('User not found!');
+                }} />
             <View style={styles.signUpContainerStyle}>
                 <Text style={{ color: "rgb(224,224,224)" }}>
                     Don't have an account?</Text>
