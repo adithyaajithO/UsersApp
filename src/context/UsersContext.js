@@ -23,46 +23,57 @@ const userReducer = (state, action) => {
 
 export const getUsers = (dispatch) => {
     return async () => {
-        const response = await jsonServer.get('/users');
-        
-        dispatch({ type: "getUsers", payload: response.data });
+        try {
+            const response = await jsonServer.get('/users');
+            
+            dispatch({ type: "getUsers", payload: response.data });
+        }
+        catch (e) {
+            console.log('Something went wrong');
+        }
     }
 }
 
 export const addUser = (dispatch) => {
     return async (userName, password, callback) => {
-        await jsonServer.post('/users', { userName, password });
+        try {
+            await jsonServer.post('/users', { userName, password });
 
-        callback();
+            callback();
+        }
+        catch (e) {
+            console.log('Something went wrong');
+        }
     }
 }
 
 export const deleteUser = (dispatch) => {
     return async (id) => {
-        await jsonServer.delete(`/users/${id}`);
+        try { 
+            await jsonServer.delete(`/users/${id}`);
 
-        dispatch({ type: "deleteUser", payload: id });
+            dispatch({ type: "deleteUser", payload: id });
+        }
+        catch (e) {
+            console.log('Something went wrong');
+        }
     }
 }
 
 export const editUser = (dispatch) => {
     return async (id, userName, password, callback) => {
-        await jsonServer.put(`/users/${id}`, { userName, password });
+        try {
+            await jsonServer.put(`/users/${id}`, { userName, password });
 
-        // dispatch({ type: "editUser", payload: { id, userName, password } });
-        callback();
+            // dispatch({ type: "editUser", payload: { id, userName, password } });
+            callback();
+        }
+        catch (e) {
+            console.log('Something went wrong');
+        }
     }
 }
 
 
 export const { Context, Provider } = createContext(userReducer,
      { addUser, deleteUser, editUser, getUsers }, []);
-// export const UsersProvider = ({ children }) => {
-//     return <UsersContext.Provider value={"Users List"}>
-//         {children}
-//     </UsersContext.Provider>
-// }
-
-
-
-// export default UsersContext;
