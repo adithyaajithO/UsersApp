@@ -46,9 +46,9 @@ const Navigator = () => {
 
 const App = () => {
   return <NavigationContainer>
-    <UsersProvider>
+    {/* <UsersProvider> */}
       <Navigator />
-    </UsersProvider>
+    {/* </UsersProvider> */}
   </NavigationContainer>
 }
 
