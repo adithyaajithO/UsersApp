@@ -1,5 +1,7 @@
 import createContext from './createContext';
-import jsonServer from '../api/jsonServer';
+import usersServer from '../api/usersServer';
+import { navigate } from '../navigationRef';
+
 
 const userReducer = (state, action) => {
     switch (action.type) {
@@ -8,7 +10,7 @@ const userReducer = (state, action) => {
         case 'deleteUser':
             // payload will have the 'id' to be deleted
             return state.filter((user) => {
-                return user.id !== action.payload
+                return user._id !== action.payload
             });
         case 'editUser':
             // payload will have the 'id' to be deleted
@@ -22,24 +24,27 @@ const userReducer = (state, action) => {
 }
 
 export const getUsers = (dispatch) => {
-    return async () => {
+    return async (token) => {
         try {
-            const response = await jsonServer.get('/users');
-            
+            const options = {
+                headers: {
+                     Authorization: token
+                }
+            }
+            const response = await usersServer.get('/users', options);
             dispatch({ type: "getUsers", payload: response.data });
         }
         catch (e) {
             console.log('Something went wrong');
+            console.log(e.response.data);
         }
     }
 }
 
 export const addUser = (dispatch) => {
-    return async (userName, password, callback) => {
+    return async (userName, password) => {
         try {
-            await jsonServer.post('/users', { userName, password });
-
-            callback();
+            await usersServer.post('/users', { userName, password });
         }
         catch (e) {
             console.log('Something went wrong');
@@ -48,9 +53,15 @@ export const addUser = (dispatch) => {
 }
 
 export const deleteUser = (dispatch) => {
-    return async (id) => {
+    return async (id, token) => {
         try { 
-            await jsonServer.delete(`/users/${id}`);
+            const options = {
+                headers: {
+                     Authorization: token,
+                     user_id: id
+                }
+            }
+            await usersServer.delete('/users', options);
 
             dispatch({ type: "deleteUser", payload: id });
         }
@@ -61,12 +72,18 @@ export const deleteUser = (dispatch) => {
 }
 
 export const editUser = (dispatch) => {
-    return async (id, userName, password, callback) => {
+    return async (id, userName, password, token) => {
         try {
-            await jsonServer.put(`/users/${id}`, { userName, password });
+            const options = {
+                headers: {
+                     Authorization: token,
+                     user_id: id
+                }
+            }
+            await usersServer.put('/users', { userName, password }, options);
 
             // dispatch({ type: "editUser", payload: { id, userName, password } });
-            callback();
+            navigate('Users');
         }
         catch (e) {
             console.log('Something went wrong');

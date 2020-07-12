@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Context as UsersContext } from '../context/UsersContext';
+import { AuthContext } from '../context/AuthContext';
 import Pagination from '../components/Pagination';
 import SearchBar from '../components/SearchBar';
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,8 +10,9 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const UsersList = ({ navigation }) => {
     const { state, deleteUser, getUsers } = useContext(UsersContext);
+    const auth = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
-    const [usersPerPage] = useState(8);
+    const [usersPerPage] = useState(7);
     const [sortFlag, setSortFlag] = useState(false);
     // const [currentUsers, setCurrentUsers] = useState(state.slice(indexOfFirstUser, indexOfLastUser));
     const [search, setSearch] = useState('');
@@ -23,9 +25,9 @@ const UsersList = ({ navigation }) => {
     // }
 
     useEffect(() => {
-        getUsers();
+        getUsers(auth.state.token);
         const unsubscribe = navigation.addListener('focus', () => {
-            getUsers();
+            getUsers(auth.state.token);
             setSearchResults('');
         });
 
@@ -86,15 +88,14 @@ const UsersList = ({ navigation }) => {
             </TouchableOpacity>
         </View>
         <FlatList data={searchResults.length > 0 ? searchResults : currentUsers}
-            keyExtractor={(users) => users.id.toString()}
+            keyExtractor={(users) => users._id.toString()}
             renderItem={({ item }) => {
                 return <TouchableOpacity
-                    onPress={() => navigation.navigate('Details', { id: item.id })}>
+                    onPress={() => navigation.navigate('Details', { id: item._id })}>
                     <View style={styles.flatListStyle}>
                         <Text style={styles.textStyle}>{item.userName}</Text>
-                        <Text style={styles.textStyle}>{item.id}</Text>
                         <TouchableOpacity onPress={() => {
-                            deleteUser(item.id);
+                            deleteUser(item._id, auth.state.token);
                             setSearchResults('');
                         }}>
                             <Feather name="trash" style={styles.iconStyle} />

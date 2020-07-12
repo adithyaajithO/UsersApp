@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context as UserContext } from '../context/UsersContext';
+import { AuthContext } from '../context/AuthContext';
 import { Card } from 'react-native-elements';
 import UserForm from '../components/UserForm';
 
@@ -9,10 +10,11 @@ const UserDetails = ({ route, navigation }) => {
     const id = route.params.id;
     const { state, editUser } = useContext(UserContext);
     const user = state.find((user) => {
-        return user.id === id
+        return user._id === id
     });
+    const auth = useContext(AuthContext);
     const [userName, setUser] = useState(user.userName);
-    const [password, setPassword] = useState(user.password);
+    const [password, setPassword] = useState('');
     
     return <View style={styles.parentContainerStyle}>
         <Card title="Update Details"
@@ -26,9 +28,7 @@ const UserDetails = ({ route, navigation }) => {
                 setPassword={(password) => setPassword(password)}
                 buttonLabel="Update Details"
                 onSubmit={() => {
-                    editUser(id, userName, password, () => {
-                        navigation.navigate('Users');
-                    });
+                    editUser(id, userName, password, auth.state.token);
                 }} />
             <TouchableOpacity onPress={() => navigation.navigate('Send', { userName })}>
                 <Text style={{ color: '#3798E9' }}>Send email to this user</Text>

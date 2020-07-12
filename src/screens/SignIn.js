@@ -3,13 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
 import { AuthContext } from '../context/AuthContext';
-// import { Context as UsersContext } from '../context/UsersContext';
 import Spacer from '../components/Spacer';
 
 
-const SignUp = ({ navigation }) => {
-    const { state, signup, clearError } = useContext(AuthContext);
-    // const { addUser } = useContext(AuthContext);
+const SignIn = ({ navigation }) => {
+    const { state, signin, clearError } = useContext(AuthContext);
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
 
@@ -21,20 +19,19 @@ const SignUp = ({ navigation }) => {
     }, []);
 
     return <View style={styles.containerStyle}>
-        <AuthForm title="Sign Up"
+        <AuthForm title="Sign In"
             userName={userName}
             password={password}
             setUserName={setUserName}
             setPassword={setPassword}
             errorMessage={state.errorMessage}
             onSubmit={() => {
-                signup({ userName, password });
+                signin({ userName, password })
             }} />
         <Spacer>
-            <NavLink link="SignIn"
-                linkText="Already have an account ? Sign In.." />
+            <NavLink link="Signup"
+                linkText="Don't have an account ? Sign Up.." />
         </Spacer>
-
     </View>
 }
 
@@ -46,4 +43,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignUp;
+export default SignIn;

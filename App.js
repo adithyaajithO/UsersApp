@@ -1,31 +1,50 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { setNavigator } from './src/navigationRef';
+import { AuthContext, actions, authReducer } from './src/context/AuthContext';
 import { Provider as UsersProvider } from './src/context/UsersContext';
+import ResolveAuth from './src/screens/ResolveAuth';
 import Login from './src/screens/Login';
+import SignIn from './src/screens/SignIn';
 import SignUp from './src/screens/SignUp';
 import UsersList from './src/screens/UsersList';
 import UserDetails from './src/screens/UserDetails';
 import SendEmail from './src/screens/SendEmail';
+import Account from './src/screens/Account';
 
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const Navigator = () => {
+const LoginFlow = () => {
   return <Stack.Navigator
-    initialRoutename="Login"
-  >
+    initialRouteName="ResolveAuth">
     <Stack.Screen
-      name="Login"
-      component={Login}
-      options={{ title: 'Users- Login / SignUp' }}
-      // options={Login.navigationOptions}
+      name="ResolveAuth"
+      component={ResolveAuth}
+      options={{
+        header: () => null
+      }} />
+    <Stack.Screen
+      name="SignIn"
+      component={SignIn}
+      options={{ title: 'Users- SignIn / SignUp' }}
+    // options={Login.navigationOptions}
     />
     <Stack.Screen
       name="Signup"
       component={SignUp}
       options={{ title: 'Users- Registration' }}
     />
+  </Stack.Navigator>
+}
+
+const UsersFlow = () => {
+  return <Stack.Navigator
+    initialRoutename="Users"
+  >
     <Stack.Screen
       name="Users"
       component={UsersList}
@@ -44,20 +63,48 @@ const Navigator = () => {
   </Stack.Navigator>
 }
 
-const App = () => {
-  return <NavigationContainer>
-    {/* <UsersProvider> */}
-      <Navigator />
-    {/* </UsersProvider> */}
-  </NavigationContainer>
+const MainFlow = () => {
+  return <Tab.Navigator
+    initialRoutename="Users"
+  >
+    <Tab.Screen
+      name="UsersFlow"
+      component={UsersFlow}
+    />
+    <Tab.Screen
+      name="Account"
+      component={Account} />
+  </Tab.Navigator>
 }
 
 export default () => {
-  return <UsersProvider>
-    <App />
-  </UsersProvider>
+  const [state, dispatch] = useReducer(authReducer, { token: null, errorMessage: '' });
 
+  const boundActions = {};
+  for (let key in actions) {
+    boundActions[key] = actions[key](dispatch);
+  }
+  console.log({ state, boundActions });
+
+  return <AuthContext.Provider value={{ state, ...boundActions }}>
+    <UsersProvider>
+      <NavigationContainer ref={(navigation) => {
+        setNavigator(navigation);
+      }}>
+        {!state.token ?
+          <LoginFlow /> :
+          <MainFlow />}
+      </NavigationContainer>
+    </UsersProvider>
+  </AuthContext.Provider>
 }
+
+// export default () => {
+//   return <UsersProvider>
+//     <App />
+//   </UsersProvider>
+
+// }
 
 // export default () => {
 //   return <NavigationContainer>

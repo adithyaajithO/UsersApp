@@ -1,21 +1,38 @@
-import  '../../__mocks__/api/jsonServer.mock';
+import  '../../__mocks__/api/usersServer.mock';
 // import { addUser, editUser, getUsers, deleteUser } from "../../context/UsersContext";
-import jsonServer from '../../api/jsonServer';
+import usersServer from '../../api/usersServer';
 
-const getUsers = async () => {
-    return await jsonServer.get('/users');
+const getUsers = async (token) => {
+    const options = {
+      headers: {
+        Authorization: token
+      }
+    }
+    return await usersServer.get('/users', options);
 }
 
-const editUser = async (id, { userName, password }) => {
-    return await jsonServer.put(`/users/${id}`, { userName, password });
+const editUser = async (id, { userName, password }, token) => {
+    const options = {
+      headers: {
+        Authorization: token,
+        user_id: id
+      }
+    }
+    return await usersServer.put(`/users`, { userName, password }, options);
 }
 
-const deleteUser = async (id) => {
-    return await jsonServer.delete(`/users/${id}`);
+const deleteUser = async (id, token) => {
+    const options = {
+      headers: {
+        Authorization: token,
+        user_id: id
+      }
+    }
+    return await usersServer.delete(`/users`, options);
 }
 
 const addUser = async ({ userName, password }) => {
-    return await jsonServer.post('/users', { userName, password });;
+    return await usersServer.post('/users', { userName, password });;
 }
 
 describe('getUsers', () => {
@@ -158,13 +175,18 @@ describe('getUsers', () => {
             }
           ]
 
+        const options = {
+          headers: {
+            Authorization: 'token'
+          }
+        }
 
-        jsonServer.get.mockImplementationOnce(() => Promise.resolve(data));
+        usersServer.get.mockImplementationOnce(() => Promise.resolve(data));
 
-        await expect(getUsers()).resolves.toEqual(data);
+        await expect(getUsers('token')).resolves.toEqual(data);
 
-        expect(jsonServer.get).toHaveBeenCalledWith(
-            '/users',
+        expect(usersServer.get).toHaveBeenCalledWith(
+            '/users', options
         );
     });
 });
@@ -173,13 +195,19 @@ describe('editUser', () => {
     test('fetches successfully result details from api', async () => {
         const status = true
 
+        const options = {
+          headers: {
+            Authorization: 'token',
+            user_id: 5
+          }
+        }
 
-        jsonServer.put.mockImplementationOnce(() => Promise.resolve(status));
+        usersServer.put.mockImplementationOnce(() => Promise.resolve(status));
 
-        await expect(editUser(5, { userName: 'jithu', password: 'jithupass' })).resolves.toEqual(status);
+        await expect(editUser(5, { userName: 'jithu', password: 'jithupass' }, 'token')).resolves.toEqual(status);
 
-        expect(jsonServer.put).toHaveBeenCalledWith(
-            '/users/5', {"password": "jithupass", "userName": "jithu"}
+        expect(usersServer.put).toHaveBeenCalledWith(
+            '/users', {"password": "jithupass", "userName": "jithu"}, options
         );
     });
 });
@@ -188,13 +216,19 @@ describe('deleteUser', () => {
     test('fetches successfully result details from api', async () => {
         const status = true
 
+        const options = {
+          headers: {
+            Authorization: 'token',
+            user_id: 5
+          }
+        }
 
-        jsonServer.delete.mockImplementationOnce(() => Promise.resolve(status));
+        usersServer.delete.mockImplementationOnce(() => Promise.resolve(status));
 
-        await expect(deleteUser(5)).resolves.toEqual(status);
+        await expect(deleteUser(5, 'token')).resolves.toEqual(status);
 
-        expect(jsonServer.delete).toHaveBeenCalledWith(
-            '/users/5',
+        expect(usersServer.delete).toHaveBeenCalledWith(
+            '/users', options
         );
     });
 });
@@ -204,11 +238,11 @@ describe('addUser', () => {
         const status = true
 
 
-        jsonServer.post.mockImplementationOnce(() => Promise.resolve(status));
+        usersServer.post.mockImplementationOnce(() => Promise.resolve(status));
 
         await expect(addUser({ userName: 'jithu', password: 'jithupass' })).resolves.toEqual(status);
 
-        expect(jsonServer.post).toHaveBeenCalledWith(
+        expect(usersServer.post).toHaveBeenCalledWith(
             '/users', {"password": "jithupass", "userName": "jithu"}
         );
     });
