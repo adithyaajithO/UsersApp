@@ -21,7 +21,7 @@ const UserForm = ({ userName, password, setUser, setPassword, buttonLabel, onSub
             <TextInput
                 value={password}
                 onChangeText={(value) => {
-                    setPassword(value)
+                    setPassword(value);
                 }}
                 style={styles.inputStyle}
                 secureTextEntry

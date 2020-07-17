@@ -9,10 +9,9 @@ export const AuthContext = React.createContext();
 const signup = (dispatch) => async ({ userName, password }) => {
 
     try {
-        console.log('yowza');
         const response = await usersServer.post('/signup', { userName, password });
 
-        console.log('in try :: ', response.data.token);
+        // console.log('in try :: ', response.data.token);
         await AsyncStorage.setItem('token', response.data.token);
         // await callback();
         dispatch({ type: 'auth', payload: response.data.token });
@@ -20,7 +19,7 @@ const signup = (dispatch) => async ({ userName, password }) => {
     }
     catch (e) {
         console.log(e.response.data);
-        dispatch({ type: 'addError', payload: 'Something went wrong !!' });
+        dispatch({ type: 'addError', payload: e.response.data.error });
         // navigate('SignIn');
     }
 
@@ -32,14 +31,14 @@ const signin = (dispatch) => async ({ userName, password }) => {
     try {
         const response = await usersServer.post('/signin', { userName, password });
 
-        console.log('in try :: ', response.data.token);
+        // console.log('in try :: ', response.data.token);
         await AsyncStorage.setItem('token', response.data.token);
         dispatch({ type: 'auth', payload: response.data.token });
         // navigate('SignIn');
     }
     catch (e) {
         console.log(e.response.data);
-        dispatch({ type: 'addError', payload: 'Something went wrong !!' });
+        dispatch({ type: 'addError', payload: e.response.data.error });
         // navigate('SignIn');
     }
 
@@ -69,7 +68,7 @@ const clearError = (dispatch) => () => {
 }
 
 export const authReducer = (state, action) => {
-    console.log('action ', action);
+    // console.log('action ', action);
     switch (action.type) {
 
         case 'auth':

@@ -18,6 +18,10 @@ const userReducer = (state, action) => {
                 return user.id === action.payload.id
                     ? action.payload : user;
             });
+        case 'getUserImage':
+            return [...state, { userImage: action.payload }];
+        case 'getUserImageError':
+            return [...state, { userImageError: action.payload }];
         default:
             return state;
     }
@@ -80,6 +84,7 @@ export const editUser = (dispatch) => {
                      user_id: id
                 }
             }
+            console.log('Password ::', password);
             await usersServer.put('/users', { userName, password }, options);
 
             // dispatch({ type: "editUser", payload: { id, userName, password } });
@@ -91,6 +96,41 @@ export const editUser = (dispatch) => {
     }
 }
 
+const saveUserImage = (dispatch) => {
+    return async (id, image, token) => {
+        try {
+            const options = {
+                headers: {
+                     Authorization: token,
+                     user_id: id
+                }
+            }
+            await usersServer.put('/users/image', { image }, options);
+            navigate('Details');
+        }
+        catch (e) {
+            console.error(e.response.data);
+        }
+    }
+}
+
+const getUserImage = (dispatch) => async (id, token) => {
+    try {
+        const options = {
+            headers: {
+                 Authorization: token,
+                 user_id: id
+            }
+        }
+        response = await usersServer.get('/users/image', { id }, options);
+        dispatch({ type: 'getUserImage', payload: response.data });
+    }
+    catch (e) {
+        console.error(e.response.data);
+        dispatch({ type: 'getUserImageError', payload: "Image not fetched" });
+    }
+}
+
 
 export const { Context, Provider } = createContext(userReducer,
-     { addUser, deleteUser, editUser, getUsers }, []);
+     { addUser, deleteUser, editUser, getUsers, saveUserImage, getUserImage }, []);

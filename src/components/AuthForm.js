@@ -11,6 +11,7 @@ const AuthForm = ({ title, userName, setUserName,
         <Spacer>
             <Text h3>{title}</Text>
         </Spacer>
+        <Spacer />
         <Input
             label="User Name"
             value={userName}

@@ -11,8 +11,9 @@ const Account = () => {
 
     return <SafeAreaView>
         <View>
-            <Text h3>Account Screen</Text>
             <Spacer>
+                <Text h3>Account Screen</Text>
+                <Spacer />
                 <Button title="Sign Out" onPress={() => {
                     signout();
                 }} />

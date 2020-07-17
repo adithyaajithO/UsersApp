@@ -41,6 +41,7 @@ const SignUp = ({ navigation }) => {
 const styles = StyleSheet.create({
     containerStyle: {
         flex: 1,
+        paddingTop:15,
         marginBottom: 200,
         justifyContent: 'center'
     }

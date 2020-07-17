@@ -21,6 +21,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.reactnativefirebase",
+      "googleServicesFile": "google-services .json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBDk1SqkxowaXhTGD3qs_nd0CShm0CTCS8"
+        }
+      }
     }
   }
 }
