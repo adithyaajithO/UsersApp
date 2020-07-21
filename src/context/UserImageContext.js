@@ -5,6 +5,7 @@ import * as FileSystem from 'expo-file-system';
 
 
 const userImageReducer = (state, action) => {
+    console.log(action);
     switch (action.type) {
         case 'getUserImage':
             return action.payload;
@@ -57,8 +58,7 @@ const saveUserImage = (dispatch) => {
                 },
                 body: imageData,
             };
-            await fetch("http://d6587a19db1d.ngrok.io" + "/users/image", config);
-
+            await fetch("http://b9e996c16511.ngrok.io" + "/users/image", config);
             // await usersServer.put('/users/image', { imageData }, options);
             navigate('Details');
         }
@@ -83,7 +83,7 @@ const getUserImage = (dispatch) => async (id, token) => {
         // res = await usersServer.get(`/uploads/${id}.jpg`, options);
         // console.log(res);
         const downloadResumable = FileSystem.createDownloadResumable(
-            'http://d6587a19db1d.ngrok.io/users/image',
+            'http://b9e996c16511.ngrok.io/users/image',
             FileSystem.documentDirectory + `${id}.jpg`,
             options,
             callback
@@ -93,8 +93,8 @@ const getUserImage = (dispatch) => async (id, token) => {
         const filePromise = FileSystem.getInfoAsync(uri);
         console.log('status ', filePromise.then((fileDetails) => {
             fileDetails.size > 1000 ?
-            dispatch({ type: 'getUserImage', payload: { id, userImage: uri, userImageError: '' } }) :
-            dispatch({ type: 'getUserImageError', payload: { id, userImageError: "Image not fetched", userImage: '' } });
+            dispatch({ type: 'getUserImage', payload: { id, userImage: uri, userImageError: '', isLoading: false } }) :
+            dispatch({ type: 'getUserImageError', payload: { id, userImageError: "Image not fetched", userImage: '', isLoading: false } });
             
         }));
         ;
@@ -102,14 +102,14 @@ const getUserImage = (dispatch) => async (id, token) => {
     }
     catch (e) {
         console.log(e);
-        dispatch({ type: 'getUserImageError', payload: { id, userImageError: "Image not fetched", userImage: '' } });
+        dispatch({ type: 'getUserImageError', payload: { id, userImageError: "Image not fetched", userImage: '', isLoading: false } });
     }
 }
 
 const clearUserImage = (dispatch) => {
     return () => {
-        dispatch({ type: 'clearUserImage', payload: { id: '', userImageError: '', userImage: '' } });
+        dispatch({ type: 'clearUserImage', payload: { id: '', userImageError: '', userImage: '', isLoading: true } });
     }
 }
 export const { Context, Provider } = createContext(userImageReducer,
-    { saveUserImage, getUserImage, clearUserImage }, { id: '', userImageError: '', userImage: '' });
+    { saveUserImage, getUserImage, clearUserImage }, { id: '', userImageError: '', userImage: '', isLoading: '' });

@@ -6,6 +6,7 @@ import { setNavigator } from './src/navigationRef';
 import { AuthContext, actions, authReducer } from './src/context/AuthContext';
 import { Provider as UsersProvider } from './src/context/UsersContext';
 import { Provider as UserImageProvider } from './src/context/UserImageContext';
+import { Provider as UserAddressProvider } from './src/context/UserAddressContext';
 import ResolveAuth from './src/screens/ResolveAuth';
 import SignIn from './src/screens/SignIn';
 import SignUp from './src/screens/SignUp';
@@ -81,7 +82,9 @@ const UsersFlow = () => {
     <Stack.Screen
       name="Maps"
       component={MapScreen}
-      options={{ title: 'Add your address' }}
+      options={{
+        title: 'Add your address'
+      }}
     />
   </Stack.Navigator>
 }
@@ -141,13 +144,15 @@ export default () => {
   return <AuthContext.Provider value={{ state, ...boundActions }}>
     <UsersProvider>
       <UserImageProvider>
-        <NavigationContainer ref={(navigation) => {
-          setNavigator(navigation);
-        }}>
-          {!state.token ?
-            <LoginFlow /> :
-            <MainFlow />}
-        </NavigationContainer>
+        <UserAddressProvider>
+          <NavigationContainer ref={(navigation) => {
+            setNavigator(navigation);
+          }}>
+            {!state.token ?
+              <LoginFlow /> :
+              <MainFlow />}
+          </NavigationContainer>
+        </UserAddressProvider>
       </UserImageProvider>
     </UsersProvider>
   </AuthContext.Provider>
