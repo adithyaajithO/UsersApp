@@ -1,0 +1,23 @@
+{
+  "name": "track-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "tunnel": "ngrok http 3001"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^5.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.22",
+    "multer": "^1.4.2",
+    "ngrok": "^3.2.7",
+    "nodemon": "^2.0.4"
+  }
+}

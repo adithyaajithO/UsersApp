@@ -58,7 +58,7 @@ const saveUserImage = (dispatch) => {
                 },
                 body: imageData,
             };
-            await fetch("http://b9e996c16511.ngrok.io" + "/users/image", config);
+            await fetch("http://a9ff253cfc1b.ngrok.io" + "/users/image", config);
             // await usersServer.put('/users/image', { imageData }, options);
             navigate('Details');
         }
@@ -83,20 +83,21 @@ const getUserImage = (dispatch) => async (id, token) => {
         // res = await usersServer.get(`/uploads/${id}.jpg`, options);
         // console.log(res);
         const downloadResumable = FileSystem.createDownloadResumable(
-            'http://b9e996c16511.ngrok.io/users/image',
-            FileSystem.documentDirectory + `${id}.jpg`,
+            'http://a9ff253cfc1b.ngrok.io/users/image',
+            FileSystem.documentDirectory + `${id}-${Math.floor(Math.random() * 100000)}.jpg`,
             options,
             callback
         );
         const { uri } = await downloadResumable.downloadAsync();
         console.log('Finished downloading to ', uri);
         const filePromise = FileSystem.getInfoAsync(uri);
-        console.log('status ', filePromise.then((fileDetails) => {
+        filePromise.then((fileDetails) => {
+            console.log('size ::', fileDetails.size);
             fileDetails.size > 1000 ?
             dispatch({ type: 'getUserImage', payload: { id, userImage: uri, userImageError: '', isLoading: false } }) :
             dispatch({ type: 'getUserImageError', payload: { id, userImageError: "Image not fetched", userImage: '', isLoading: false } });
             
-        }));
+        });
         ;
         // dispatch({ type: 'getUserImage', payload: { id, userImage: uri, userImageError: '' } });
     }

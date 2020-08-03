@@ -19,18 +19,19 @@ const CameraScreen = ({ route }) => {
 
     let camera = null;
 
-    const imageSizes = () => {
-        const size = camera.getAvailablePictureSizesAsync('4:3');
-        return size;
-    }
 
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
+            // const imageSizes = async() => {
+            //     const size = await camera.getAvailablePictureSizesAsync('4:3');
+                
+            //     return size;
+            // }
             // let imgSize = imageSizes();
             // console.log(imgSize.then((sizes) => {
-            //     console.log(sizes);
+            //     console.log('sizes ::', sizes);
             // }));
         })();
     }, []);
@@ -73,7 +74,7 @@ const CameraScreen = ({ route }) => {
                 <Camera style={{ flex: 1 }} type={type} ref={(ref) => {
                     camera = ref
                 }}
-                    pictureSize="_72"
+                    pictureSize="1440x1080"
                 >
                     <View
                         style={{

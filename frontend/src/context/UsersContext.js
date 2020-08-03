@@ -84,7 +84,6 @@ export const editUser = (dispatch) => {
                      user_id: id
                 }
             }
-            console.log('Password ::', password);
             await usersServer.put('/users', { userName, password }, options);
 
             // dispatch({ type: "editUser", payload: { id, userName, password } });
